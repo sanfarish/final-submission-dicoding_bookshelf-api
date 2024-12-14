@@ -56,4 +56,22 @@ const getAllBooks = () => ({
     data: { books }
 });
 
-module.exports = { createBook, getAllBooks };
+const getByIdBook = (request, h) => {
+    const { id } = request.params;
+
+    const book = books.filter((b) => b.id === id)[0];
+    if (book) {
+        return {
+            status: "success",
+            data: { book }
+        };
+    } else {
+        return sendResponse(h, {
+            code: 404,
+            status: "fail",
+            message: "Buku tidak ditemukan"
+        });
+    };
+};
+
+module.exports = { createBook, getAllBooks, getByIdBook };
