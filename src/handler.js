@@ -51,4 +51,9 @@ const createBook = (request, h) => {
     });
 };
 
-module.exports = { createBook };
+const getAllBooks = () => ({
+    status: "success",
+    data: { books }
+});
+
+module.exports = { createBook, getAllBooks };
