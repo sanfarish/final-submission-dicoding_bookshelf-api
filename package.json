@@ -17,7 +17,7 @@
     "hapi"
   ],
   "author": "Faris Hasan <farisfalah@gmail.com> (https://farishasan.web.id/)",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "eslint": "^9.17.0",
@@ -25,6 +25,7 @@
     "nodemon": "^3.1.9"
   },
   "dependencies": {
-    "@hapi/hapi": "^21.3.12"
+    "@hapi/hapi": "^21.3.12",
+    "nanoid": "^3.3.8"
   }
 }
