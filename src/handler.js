@@ -32,6 +32,11 @@ const createBook = (request, h) => {
   const insertedAt = new Date().toISOString()
   const updatedAt = new Date().toISOString()
   const newBook = { id, name, year, author, summary, publisher, pageCount, readPage, reading, insertedAt, updatedAt }
+  if (pageCount === readPage) {
+    newBook.finished = true
+  } else {
+    newBook.finished = false
+  }
   books.push(newBook)
 
   const isSuccess = books.filter((book) => book.id === id).length > 0
@@ -45,10 +50,20 @@ const createBook = (request, h) => {
   }
 }
 
-const getAllBooks = () => ({
-  status: 'success',
-  data: { books }
-})
+const getAllBooks = () => {
+  const booksData = books.map((book) => {
+    return {
+      id: book.id,
+      name: book.name,
+      publisher: book.publisher
+    }
+  })
+
+  return {
+    status: 'success',
+    data: { books: booksData }
+  }
+}
 
 const getByIdBook = (request, h) => {
   const { id } = request.params
