@@ -3,34 +3,34 @@ const books = require('./books')
 
 function sendResponse (h, { code, status, message, data }) {
   const responseBody = { status, message }
-  if (data) responseBody.data = data
+  if (data) {
+    responseBody.data = data
+  }
   const response = h.response(responseBody)
   response.code(code)
   return response
 };
 
 const createBook = (request, h) => {
-  if (!request.payload.name) {
+  const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload
+  if (!name) {
     return sendResponse(h, {
       code: 400,
       status: 'fail',
       message: 'Gagal menambahkan buku. Mohon isi nama buku'
     })
-  };
-
-  if (request.payload.pageCount < request.payload.readPage) {
+  }
+  if (pageCount < readPage) {
     return sendResponse(h, {
       code: 400,
       status: 'fail',
       message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount'
     })
-  };
+  }
 
-  const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload
   const id = nanoid(16)
   const insertedAt = new Date().toISOString()
   const updatedAt = new Date().toISOString()
-
   const newBook = { id, name, year, author, summary, publisher, pageCount, readPage, reading, insertedAt, updatedAt }
   books.push(newBook)
 
@@ -42,13 +42,7 @@ const createBook = (request, h) => {
       message: 'Buku berhasil ditambahkan',
       data: { bookId: id }
     })
-  };
-
-  return sendResponse(h, {
-    code: 500,
-    status: 'fail',
-    message: 'Buku gagal ditambahkan'
-  })
+  }
 }
 
 const getAllBooks = () => ({
@@ -60,18 +54,18 @@ const getByIdBook = (request, h) => {
   const { id } = request.params
 
   const book = books.filter((b) => b.id === id)[0]
-  if (book) {
-    return {
-      status: 'success',
-      data: { book }
-    }
-  } else {
+  if (!book) {
     return sendResponse(h, {
       code: 404,
       status: 'fail',
       message: 'Buku tidak ditemukan'
     })
-  };
+  }
+
+  return {
+    status: 'success',
+    data: { book }
+  }
 }
 
 const updateBook = (request, h) => {
@@ -103,7 +97,6 @@ const updateBook = (request, h) => {
 
   const updatedAt = new Date().toISOString()
   const updatedBook = { name, year, author, summary, publisher, pageCount, readPage, reading, updatedAt }
-
   const index = books.findIndex(b => b.id === id)
   books[index] = { ...books[index], ...updatedBook }
 
@@ -114,7 +107,7 @@ const updateBook = (request, h) => {
       status: 'success',
       message: 'Buku berhasil diperbarui'
     })
-  };
+  }
 }
 
 const removeBook = (request, h) => {
