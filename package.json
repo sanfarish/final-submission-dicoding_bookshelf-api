@@ -1,5 +1,5 @@
 {
-  "name": "farishasan-bookshelf-api",
+  "name": "final-submission-dicoding_bookshelf-api",
   "version": "1.0.0",
   "description": "REST API of bookshelf system for dicoding submission",
   "main": "src/server.js",

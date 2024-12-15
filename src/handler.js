@@ -50,8 +50,23 @@ const createBook = (request, h) => {
   }
 }
 
-const getAllBooks = () => {
-  const booksData = books.map((book) => {
+const getAllBooks = (request, h) => {
+  let booksData = books
+
+  const { name, reading, finished } = request.query
+  if (name) {
+    booksData = booksData.filter((book) => book.name === name)
+  }
+  if (parseInt(reading) === 0 || parseInt(reading) === 1) {
+    const readingData = parseInt(reading) === 1
+    booksData = booksData.filter((book) => book.reading === readingData)
+  }
+  if (parseInt(finished) === 0 || parseInt(finished) === 1) {
+    const finishedData = parseInt(finished) === 1
+    booksData = booksData.filter((book) => book.finished === finishedData)
+  }
+
+  const allBooks = booksData.map((book) => {
     return {
       id: book.id,
       name: book.name,
@@ -61,7 +76,7 @@ const getAllBooks = () => {
 
   return {
     status: 'success',
-    data: { books: booksData }
+    data: { books: allBooks }
   }
 }
 
