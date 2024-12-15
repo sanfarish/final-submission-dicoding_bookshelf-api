@@ -1,3 +1,4 @@
+import globals from 'globals'
 import importPlugin from 'eslint-plugin-import'
 import nodePlugin from 'eslint-plugin-n'
 import pluginPromise from 'eslint-plugin-promise'
@@ -9,7 +10,10 @@ export default [
     files: ["**/*.js"],
     languageOptions: {
       sourceType: "commonjs",
-      globals: { ...config.globals, ...config.env },
+      globals: {
+        ...config.globals,
+        ...config.env,
+        ...globals.node },
       parserOptions: config.parserOptions
     },
     plugins: {
