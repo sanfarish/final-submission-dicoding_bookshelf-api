@@ -117,4 +117,28 @@ const updateBook = (request, h) => {
   };
 }
 
-module.exports = { createBook, getAllBooks, getByIdBook, updateBook }
+const removeBook = (request, h) => {
+  const { id } = request.params
+  const book = books.filter((b) => b.id === id)[0]
+  if (!book) {
+    return sendResponse(h, {
+      code: 404,
+      status: 'fail',
+      message: 'Buku gagal dihapus. Id tidak ditemukan'
+    })
+  }
+
+  const index = books.findIndex(b => b.id === id)
+  books.splice(index, 1)
+
+  const isSuccess = books.find((book) => book.id === id) !== id
+  if (isSuccess) {
+    return sendResponse(h, {
+      code: 200,
+      status: 'success',
+      message: 'Buku berhasil dihapus'
+    })
+  }
+}
+
+module.exports = { createBook, getAllBooks, getByIdBook, updateBook, removeBook }
