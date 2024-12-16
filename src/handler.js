@@ -55,7 +55,7 @@ const getAllBooks = (request, h) => {
 
   const { name, reading, finished } = request.query
   if (name) {
-    booksData = booksData.filter((book) => book.name === name)
+    booksData = booksData.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()))
   }
   if (parseInt(reading) === 0 || parseInt(reading) === 1) {
     const readingData = parseInt(reading) === 1
